@@ -40,8 +40,9 @@ return () => clearInterval(countdown);
 const handleClick = (option)=>{
 
    
-    ;
+    
     setSelectedOption(option);
+    console.log("Selected Option:", option, "Correct Answer:", questions[currentIndex].answer);
     
     if (option === questions[currentIndex].answer )
     {
@@ -70,8 +71,16 @@ const handleClick = (option)=>{
         setTimeout(()=>moveTonextQuestion(), 1000);
       
     }
+  
 
 }
+
+useEffect(() => {
+   // console.log("Updated selectedOption:", selectedOption);
+ 
+
+  }, [selectedOption]); // Runs whenever selectedOption changes
+  
 
 
 const saveResult = async ()=>{
@@ -124,25 +133,28 @@ const moveTonextQuestion =()=>{
                
             </div>
             <div className="w-full grid grid-cols-1 max-w-md gap-6">
-          {questions[currentIndex].options.map((option, index) => (
-         <button
-         key={index}
-         onClick={() => handleClick(option)}
-         className={`w-full bg-slate-100 text-gray-800 font-normal p-2 rounded-2xl transition-all duration-300
-           ${
-             selectedOption === option
-               ? option === questions[currentIndex].answer
-                 ? "bg-green-500 text-white" // ✅ Correct Answer (Green)
-                 : "bg-red-600 text-black" // ❌ Wrong Answer (Red)
-               : "hover:bg-gray-500" // Default State
-           }`}
-       >
-         <span className="font-bold mr-8">{String.fromCharCode(65 + index)}.</span>
-         {option}
-       </button>
-       
-          ))}
-        </div>
+  {questions[currentIndex].options.map((option, index) => (
+    <button
+      key={index}
+      onClick={() => handleClick(option)}
+      className={`w-full bg-slate-100 text-gray-800 font-normal p-2 rounded-2xl transition-all duration-300
+        ${
+          selectedOption === option
+            ? option === questions[currentIndex].answer
+              ? ("bg-green-600 text-green" )// ✅ Correct Answer (Green)
+              : ("bg-red-600 text-red" )// ❌ Wrong Answer (Red)
+            : "hover:bg-gray-300"
+        }`}
+    >
+      <span className="font-bold mr-8">{String.fromCharCode(65 + index)}.</span>
+      {option}
+    </button>
+    
+  ))}
+  
+
+</div>
+
         <div className="flex justify-between items-center gap-8 p-2 font-semibold">
            
             <h2>{`${currentIndex + 1 }/${questions.length}`}</h2>
